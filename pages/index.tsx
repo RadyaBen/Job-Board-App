@@ -1,6 +1,10 @@
+import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 
-const Home = () => {
+import { fetchJobList } from '../redux/slices/jobList';
+import { wrapper } from '../redux';
+
+const Home: NextPage = () => {
 	return (
 		<div>
 			<Head>
@@ -15,5 +19,14 @@ const Home = () => {
 		</div>
 	);
 };
+
+export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+	(store) => async () => {
+		await store.dispatch(fetchJobList());
+		return {
+			props: {},
+		};
+	}
+);
 
 export default Home;
